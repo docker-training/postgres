@@ -2,8 +2,11 @@ FROM ubuntu:14.04
 MAINTAINER Docker Education Team <education@docker.com>
 
 ENV PG_VERSION 9.3
+RUN locale-gen en_US.UTF-8
 RUN apt-get update
 RUN apt-get -y install postgresql postgresql-client postgresql-contrib
+
+RUN pg_dropcluster $PG_VERSION main && pg_createcluster --locale en_US.UTF-8 $PG_VERSION main
 
 RUN echo "host    all             all             0.0.0.0/0 trust" >> /etc/postgresql/$PG_VERSION/main/pg_hba.conf
 RUN echo "listen_addresses='*'" >> /etc/postgresql/$PG_VERSION/main/postgresql.conf
